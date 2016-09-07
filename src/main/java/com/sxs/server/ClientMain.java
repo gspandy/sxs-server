@@ -4,7 +4,6 @@ import com.sxs.server.service.HelloWorldService;
 import com.sxs.server.thrift.ThriftClientHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TException;
-import org.apache.thrift.transport.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
