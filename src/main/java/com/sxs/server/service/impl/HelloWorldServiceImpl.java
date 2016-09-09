@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by g.h on 2016/9/7.
+ * 测试使用，thrift实现类
  */
 @ThriftService
 public class HelloWorldServiceImpl implements HelloWorldService.Iface {

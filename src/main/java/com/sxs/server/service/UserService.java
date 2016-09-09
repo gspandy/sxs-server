@@ -1,12 +1,18 @@
 package com.sxs.server.service;
 
-import com.sxs.server.model.User;
-
 /**
- * Created by g.h on 2016/9/8.
+ * 用户服务接口类
  */
 public interface UserService {
+    /**
+     * 分布式事物正常执行测试
+     * mybatis和jpa能够正常插入数据
+     */
+    public void jtaWithSuccess();
 
-    public void save(User user);
-
+    /**
+     * 分布式事物回滚测试
+     * mybatis 或者jpa插入一条重复数据，引起重复主键异常，测试回滚情况
+     */
+    public void jtaWithFail();
 }

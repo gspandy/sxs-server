@@ -6,6 +6,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+/**
+ * model类，jpa和mybatis公用
+ */
 @Entity
 @Table(name = "t_user")
 public class User implements Serializable {

@@ -1,3 +1,0 @@
-1、修改generator.xml文件中的驱动jar包位置，文件夹中自带了一个mysql的驱动
-2、修改生成的dao、modle、mapper文件
-3、指定要生成的表,修改相应参数配置

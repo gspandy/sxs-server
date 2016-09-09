@@ -8,7 +8,7 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <import resource="application-context.xml"/>
-
+    <!--加载配置文件-->
     <context:property-placeholder location="datasource.properties"/>
 
     <bean id="xaJdbcDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init"
@@ -88,23 +88,6 @@
         <property name="annotationClass" value="com.sxs.server.annotation.MybatisDao"/>
     </bean>
 
-    <!--事物配置-->
-    <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init"
-          destroy-method="close">
-        <property name="forceShutdown" value="false"/>
-    </bean>
-
-    <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
-        <property name="transactionTimeout" value="300"/>
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
-        <property name="transactionManager" ref="atomikosTransactionManager"/>
-        <property name="userTransaction" ref="atomikosUserTransaction"/>
-        <property name="allowCustomIsolationLevels" value="true"/>
-        <property name="rollbackOnCommitFailure" value="true"/>
-    </bean>
-
     <!--jpa配置-->
     <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
           p:showSql="false"
@@ -131,12 +114,30 @@
             </props>
         </property>
     </bean>
-
     <jpa:repositories base-package="com.sxs.server.repositories"
                       transaction-manager-ref="transactionManager"
                       entity-manager-factory-ref="entityManagerFactory"
                       repository-impl-postfix="Impl"/>
 
+    <!--atomikos事物配置 -->
+    <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init"
+          destroy-method="close">
+        <property name="forceShutdown" value="false"/>
+    </bean>
+    <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+        <property name="transactionTimeout" value="300"/>
+    </bean>
+
+    <!--jta事物管理bean-->
+    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="transactionManager" ref="atomikosTransactionManager"/>
+        <property name="userTransaction" ref="atomikosUserTransaction"/>
+        <property name="allowCustomIsolationLevels" value="true"/>
+        <property name="rollbackOnCommitFailure" value="true"/>
+    </bean>
+
+    <!--启用注解事物-->
     <tx:annotation-driven transaction-manager="transactionManager"/>
+
 
 </beans>

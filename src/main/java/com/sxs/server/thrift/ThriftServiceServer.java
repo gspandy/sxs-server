@@ -28,9 +28,13 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
     public static final Logger LOGGER = LoggerFactory.getLogger(ThriftServiceServer.class);
 
     private ApplicationContext applicationContext;
-
+    /**
+     * 默认配置文件
+     */
     public static final String DEFAULT_THRIFT_CONFIG_PATH = "/thrift-config.properties";
-
+    /**
+     * thrift相关配置地址
+     */
     private String thriftConfigPath = DEFAULT_THRIFT_CONFIG_PATH;
 
     private TServer tServer;
@@ -62,6 +66,7 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
                 .selectorThreads(4)
                 .workerThreads(32)
                 .processor(multiplexedProcessor));
+
         for (Map.Entry<String, Object> entry : thriftServices.entrySet()) {
             Object serviceBean = entry.getValue();
             // 获取processor
@@ -80,10 +85,7 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
         while (!tServer.isServing()) {
             Thread.sleep(1);
         }
-
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("启动服务，监听端口：" + port);
-        }
+        LOGGER.debug("启动服务，监听端口：" + port);
     }
 
     /**

@@ -4,7 +4,7 @@ import com.sxs.server.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Created by g.h on 2016/9/8.
+ * spring jpa repository类，由spring代理类自动实现
  */
 public interface UserRepository extends JpaRepository<User, String> {
     /**
