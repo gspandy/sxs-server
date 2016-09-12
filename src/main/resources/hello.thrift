@@ -1,4 +1,4 @@
 namespace java com.gaohuan.thrift
-service HelloworldService{
+service HelloWorldService{
     string sayHello(1:string username)
 }
