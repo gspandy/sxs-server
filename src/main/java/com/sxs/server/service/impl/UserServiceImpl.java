@@ -5,7 +5,6 @@ import com.sxs.server.model.User;
 import com.sxs.server.repositories.UserRepository;
 import com.sxs.server.service.UserService;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,8 @@
 package com.sxs.server.thrift;
 
 import com.sxs.server.annotation.ThriftService;
+import com.sxs.server.service.ThriftServerAddressRegister;
+import com.sxs.server.utils.LocalAddressResolve;
 import com.sxs.server.utils.ThriftUtil;
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.TProcessor;
@@ -11,6 +13,7 @@ import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -25,13 +28,13 @@ import java.util.Map;
  */
 @Component
 public class ThriftServiceServer implements ApplicationContextAware, ApplicationListener<ContextClosedEvent> {
-    public static final Logger LOGGER = LoggerFactory.getLogger(ThriftServiceServer.class);
+    public static final Logger logger = LoggerFactory.getLogger(ThriftServiceServer.class);
 
     private ApplicationContext applicationContext;
     /**
      * 默认配置文件
      */
-    public static final String DEFAULT_THRIFT_CONFIG_PATH = "/thrift-config.properties";
+    public static final String DEFAULT_THRIFT_CONFIG_PATH = "/app-config.properties";
     /**
      * thrift相关配置地址
      */
@@ -40,15 +43,20 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
     private TServer tServer;
 
     @Value("${thrift.port}")
-    private int port = 9090;
+    private int port = 9190;
+    /**
+     * 服务注册
+     */
+    @Autowired
+    private ThriftServerAddressRegister thriftServerAddressRegister;
 
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
     public void start() throws Exception {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("扫描thrift组件");
+        if (logger.isDebugEnabled()) {
+            logger.debug("扫描thrift组件");
         }
         Map<String, Object> thriftServices = applicationContext.getBeansWithAnnotation(ThriftService.class);
         if (thriftServices == null) {
@@ -66,15 +74,15 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
                 .selectorThreads(4)
                 .workerThreads(32)
                 .processor(multiplexedProcessor));
-
+        String serviceName = null;
         for (Map.Entry<String, Object> entry : thriftServices.entrySet()) {
             Object serviceBean = entry.getValue();
             // 获取processor
             TProcessor processor = ThriftUtil.buildProcessor(serviceBean);
             // 注册
-            String serviceName = ThriftUtil.getDefaultName(ThriftUtil.getParentClass(serviceBean.getClass()));
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("注册服务组件：" + serviceName + "," + processor.getClass());
+            serviceName = ThriftUtil.getDefaultName(ThriftUtil.getParentClass(serviceBean.getClass()));
+            if (logger.isDebugEnabled()) {
+                logger.debug("注册服务组件：" + serviceName + "," + processor.getClass());
             }
             multiplexedProcessor.registerProcessor(serviceName, processor);
         }
@@ -85,7 +93,12 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
         while (!tServer.isServing()) {
             Thread.sleep(1);
         }
-        LOGGER.debug("启动服务，监听端口：" + port);
+        logger.debug("启动服务，监听端口：" + port);
+        String address = LocalAddressResolve.findLocalIp() + ":" + port;
+        // 注册服务
+        if (thriftServerAddressRegister != null) {
+            thriftServerAddressRegister.register(serviceName, address);
+        }
     }
 
     /**

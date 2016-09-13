@@ -2,6 +2,9 @@ package com.sxs.server.zookeeper;
 
 import org.codehaus.jackson.map.annotate.JsonRootName;
 
+/**
+ * (测试,未使用)
+ */
 @JsonRootName("details")
 public class InstanceDetails {
     private String description;

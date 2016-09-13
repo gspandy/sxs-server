@@ -6,7 +6,7 @@ import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.UriSpec;
 
 /**
- * zookeeper服务注册类
+ * zookeeper服务注册类 (测试,未使用)
  */
 public class RegisterServer {
 

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * zookeeper查找注册查找帮助类
+ * zookeeper查找注册查找帮助类 （测试,未使用)
  */
 public class DiscoveryHelper {
     private static final String CONNECTION_STRING = "localhost:2181";

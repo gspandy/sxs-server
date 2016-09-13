@@ -1,6 +1,6 @@
 package com.sxs.server.utils;
 
-import com.sxs.server.exception.ThriftRuntimeException;
+import com.sxs.server.exception.ThriftException;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TProtocol;
 import org.springframework.util.ClassUtils;
@@ -49,17 +49,17 @@ public class ThriftUtil {
         // iface接口
         Class<?> ifaceClass = getThriftServiceIfaceClass(service.getClass());
         if (ifaceClass == null) {
-            throw new ThriftRuntimeException("the iface is null");
+            throw new ThriftException("the iface is null");
         }
         // Processor
         Class<TProcessor> processorClass = getThriftServiceProcessorClass(ifaceClass);
         if (processorClass == null) {
-            throw new ThriftRuntimeException("the processor is null");
+            throw new ThriftException("the processor is null");
         }
         // constructor
         Constructor<TProcessor> constructor = ClassUtils.getConstructorIfAvailable(processorClass, ifaceClass);
         if (constructor == null) {
-            throw new ThriftRuntimeException("the processor constructor is null");
+            throw new ThriftException("the processor constructor is null");
         }
         return constructor.newInstance(service);
     }
@@ -69,18 +69,18 @@ public class ThriftUtil {
      *
      * @param inter
      * @return
-     * @throws ThriftRuntimeException
+     * @throws ThriftException
      * @throws SecurityException
      * @throws ClassNotFoundException
      */
-    public static Class<?> getParentClass(Class<?> inter) throws ThriftRuntimeException, SecurityException, ClassNotFoundException {
+    public static Class<?> getParentClass(Class<?> inter) throws ThriftException, SecurityException, ClassNotFoundException {
         Class<?> ifaceClass = getThriftServiceIfaceClass(inter);
         if (ifaceClass == null) {
-            throw new ThriftRuntimeException("the iface is null");
+            throw new ThriftException("the iface is null");
         }
         Class<?> parentClass = getThriftServiceParent(ifaceClass);
         if (parentClass == null) {
-            throw new ThriftRuntimeException("is not thrift ServiceImpl " + inter.getName());
+            throw new ThriftException("is not thrift ServiceImpl " + inter.getName());
         }
         return parentClass;
     }
@@ -92,11 +92,11 @@ public class ThriftUtil {
      * @return class TProcessor的class
      * @throws ClassNotFoundException
      * @throws SecurityException
-     * @throws ThriftRuntimeException
+     * @throws ThriftException
      */
     @SuppressWarnings("unchecked")
     private static Class<TProcessor> getThriftServiceProcessorClass(Class<?> ifaceClass) throws SecurityException, ClassNotFoundException,
-            ThriftRuntimeException {
+            ThriftException {
         if (ifaceClass == null) {
             return null;
         }

@@ -22,7 +22,7 @@ public class ClientMain {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ClientMain.class);
 
-    public static final String DEFAULT_THRIFT_CONFIG_PATH = "/thrift-config.properties";
+    public static final String DEFAULT_THRIFT_CONFIG_PATH = "/app-config.properties";
 
 
     public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, TException, IOException {

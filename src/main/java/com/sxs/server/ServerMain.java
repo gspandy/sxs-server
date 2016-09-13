@@ -1,6 +1,7 @@
 package com.sxs.server;
 
 import com.sxs.server.thrift.ThriftServiceServer;
+import com.sxs.server.zookeeper.CuratorFrameworkFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -10,7 +11,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  */
 @Configuration
 @ComponentScan(basePackages = "com.sxs.server")
-@PropertySource(value = "classpath:thrift-config.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "classpath:app-config.properties", ignoreResourceNotFound = true)
 public class ServerMain {
 
     /**
@@ -24,6 +25,11 @@ public class ServerMain {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
+    static CuratorFrameworkFactoryBean curatorFrameworkFactory() throws Exception {
+        return new CuratorFrameworkFactoryBean();
     }
 
     public static void main(String[] args) throws Exception {
