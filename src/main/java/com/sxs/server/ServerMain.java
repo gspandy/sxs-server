@@ -1,7 +1,7 @@
 package com.sxs.server;
 
 import com.sxs.server.thrift.ThriftServiceServer;
-import com.sxs.server.zookeeper.CuratorFrameworkFactoryBean;
+import com.sxs.server.zookeeper.ZkClientFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -28,8 +28,8 @@ public class ServerMain {
     }
 
     @Bean
-    static CuratorFrameworkFactoryBean curatorFrameworkFactory() throws Exception {
-        return new CuratorFrameworkFactoryBean();
+    static ZkClientFactoryBean curatorFrameworkFactory() throws Exception {
+        return new ZkClientFactoryBean();
     }
 
     public static void main(String[] args) throws Exception {

@@ -1,9 +1,11 @@
 package com.sxs.server.thrift;
 
 import com.sxs.server.annotation.ThriftService;
+import com.sxs.server.exception.ThriftException;
 import com.sxs.server.service.ThriftServerAddressRegister;
 import com.sxs.server.utils.LocalAddressResolve;
 import com.sxs.server.utils.ThriftUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -21,6 +23,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.stereotype.Component;
 
+import java.net.SocketException;
 import java.util.Map;
 
 /**
@@ -44,6 +47,9 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
 
     @Value("${thrift.port}")
     private int port = 9190;
+
+    @Value("${thrift.ip}")
+    private String ipString;
     /**
      * 服务注册
      */
@@ -94,11 +100,25 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
             Thread.sleep(1);
         }
         logger.debug("启动服务，监听端口：" + port);
-        String address = LocalAddressResolve.findLocalIp() + ":" + port;
+        String address = buildLocalAddress();
         // 注册服务
         if (thriftServerAddressRegister != null) {
             thriftServerAddressRegister.register(serviceName, address);
         }
+    }
+
+    /**
+     * 根据配置文件和动态解析查找ip
+     *
+     * @return
+     * @throws SocketException
+     */
+    private String buildLocalAddress() throws SocketException {
+        String localIp = LocalAddressResolve.findLocalIp();
+        if (StringUtils.isNotBlank(ipString) && !ipString.contains(localIp)) {
+            throw new ThriftException("ip地址异常");
+        }
+        return localIp + ":" + port;
     }
 
     /**

@@ -11,7 +11,7 @@ import java.io.Closeable;
 /**
  * 获取zookeeper客户端连接
  */
-public class CuratorFrameworkFactoryBean implements FactoryBean<CuratorFramework>, Closeable {
+public class ZkClientFactoryBean implements FactoryBean<CuratorFramework>, Closeable {
 
     @Value("${zookeeper.connectString}")
     private String connectString;
