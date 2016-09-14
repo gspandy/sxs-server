@@ -11,14 +11,28 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 
+/**
+ * thrift事件处理
+ */
 class ThriftServerEventHandler implements TServerEventHandler {
     public static final Logger logger = LoggerFactory.getLogger(ThriftServerEventHandler.class);
 
     private int nextConnectionId = 1;
 
+    /**
+     * 服务启动前执行
+     */
     public void preServe() {
     }
 
+    /**
+     * 客户端建立连接时回调(修改过原接口)
+     *
+     * @param transport
+     * @param input
+     * @param output
+     * @return
+     */
     public ServerContext createContext(TTransport transport, TProtocol input, TProtocol output) {
         ThriftServerContext ctx = new ThriftServerContext(nextConnectionId++, transport);
         if (transport != null && transport instanceof TNonblockingSocket) {
@@ -41,11 +55,25 @@ class ThriftServerEventHandler implements TServerEventHandler {
         return ctx;
     }
 
+    /**
+     * 连接端口时回调
+     *
+     * @param serverContext
+     * @param input
+     * @param output
+     */
     public void deleteContext(ServerContext serverContext, TProtocol input, TProtocol output) {
         ThriftServerContext ctx = (ThriftServerContext) serverContext;
         logger.info("TServerEventHandler.deleteContext - connection #" + ctx.getConnectionId() + " terminated");
     }
 
+    /**
+     * 客户端执行processor时执行
+     *
+     * @param serverContext
+     * @param inputTransport
+     * @param outputTransport
+     */
     public void processContext(ServerContext serverContext, TTransport inputTransport, TTransport outputTransport) {
         ThriftServerContext ctx = (ThriftServerContext) serverContext;
         if (logger.isDebugEnabled()) {

@@ -3,6 +3,9 @@ package com.sxs.server.thrift;
 import org.apache.thrift.server.ServerContext;
 import org.apache.thrift.transport.TTransport;
 
+/**
+ * thrift连接上下文
+ */
 class ThriftServerContext implements ServerContext {
 
     private int connectionId;
