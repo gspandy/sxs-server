@@ -18,7 +18,7 @@ import java.util.List;
  * spring-junit测试类
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:application-context.xml", "classpath:datasource-config.xml"})
+@ContextConfiguration({"classpath:application-context.xml", "classpath:application-context.xml"})
 public class JtaUseTest {
 
     @Autowired
