@@ -2,7 +2,7 @@ package com.sxs.server.service.impl;
 
 import com.sxs.server.dao.UserDao;
 import com.sxs.server.model.User;
-import com.sxs.server.repositories.UserRepository;
+import com.sxs.server.repository.UserRepository;
 import com.sxs.server.service.UserService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;

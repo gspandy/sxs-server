@@ -1,4 +1,4 @@
-package com.sxs.server.repositories;
+package com.sxs.server.repository;
 
 import com.sxs.server.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

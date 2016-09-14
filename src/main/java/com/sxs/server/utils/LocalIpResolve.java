@@ -9,9 +9,9 @@ import java.util.Enumeration;
 /**
  * 本地ip解析工具
  */
-public class LocalAddressResolve {
+public class LocalIpResolve {
 
-    public static String findLocalIp() throws SocketException {
+    public static String get() throws SocketException {
         // 一个主机有多个网络接口
         String localIp = null;
         Enumeration<NetworkInterface> netInterfaces = NetworkInterface.getNetworkInterfaces();
@@ -21,7 +21,7 @@ public class LocalAddressResolve {
             Enumeration<InetAddress> addresses = netInterface.getInetAddresses();
             while (addresses.hasMoreElements()) {
                 InetAddress address = addresses.nextElement();
-                if (address instanceof Inet4Address && address.isSiteLocalAddress() && !address.isLoopbackAddress()) {
+                if (address != null && address instanceof Inet4Address && address.isSiteLocalAddress() && !address.isLoopbackAddress()) {
                     localIp = address.getHostAddress();
                     break;
                 }

@@ -1,2 +1,2 @@
-1、下载thrift程序，重命名thrift.exe放到c:\windows下。
+1、下载thrift程序,版本0.9.3，重命名thrift.exe放到c:\windows下。
 2、 cmd 下执行 "thrift -gen java hello.thrift"命令

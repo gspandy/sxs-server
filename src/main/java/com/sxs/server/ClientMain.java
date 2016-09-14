@@ -22,12 +22,12 @@ public class ClientMain {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ClientMain.class);
 
-    public static final String DEFAULT_THRIFT_CONFIG_PATH = "/app-config.properties";
+    public static final String DEFAULT_THRIFT_CONFIG_PATH = "/app.properties";
 
 
     public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, TException, IOException {
         ExecutorService executor = Executors.newFixedThreadPool(50);
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 1000; i++) {
             executor.execute(() -> {
                 try {
                     ClientMain.communicateWithServer();

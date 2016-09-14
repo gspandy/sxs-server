@@ -3,7 +3,7 @@ package com.sxs.server.thrift;
 import com.sxs.server.annotation.ThriftService;
 import com.sxs.server.exception.ThriftException;
 import com.sxs.server.service.ThriftServerAddressRegister;
-import com.sxs.server.utils.LocalAddressResolve;
+import com.sxs.server.utils.LocalIpResolve;
 import com.sxs.server.utils.ThriftUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TMultiplexedProcessor;
@@ -34,14 +34,6 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
     public static final Logger logger = LoggerFactory.getLogger(ThriftServiceServer.class);
 
     private ApplicationContext applicationContext;
-    /**
-     * 默认配置文件
-     */
-    public static final String DEFAULT_THRIFT_CONFIG_PATH = "/app-config.properties";
-    /**
-     * thrift相关配置地址
-     */
-    private String thriftConfigPath = DEFAULT_THRIFT_CONFIG_PATH;
 
     private TServer tServer;
 
@@ -50,6 +42,13 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
 
     @Value("${thrift.ip}")
     private String ipString;
+
+    @Value("${thrift.selectorThreads}")
+    private int selectorThreads = 4;
+
+    @Value("${thrift.workerThreads}")
+    private int workerThreads = 32;
+
     /**
      * 服务注册
      */
@@ -77,8 +76,8 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
         tServer = new TThreadedSelectorServer(new TThreadedSelectorServer.Args(serverTransport)
                 .transportFactory(transportFactory)
                 .protocolFactory(new TBinaryProtocol.Factory())
-                .selectorThreads(4)
-                .workerThreads(32)
+                .selectorThreads(selectorThreads)
+                .workerThreads(workerThreads)
                 .processor(multiplexedProcessor));
         String serviceName = null;
         for (Map.Entry<String, Object> entry : thriftServices.entrySet()) {
@@ -92,19 +91,21 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
             }
             multiplexedProcessor.registerProcessor(serviceName, processor);
         }
-
+        tServer.setServerEventHandler(new ThriftServerEventHandler());
         //启动一个新的线程提供服务
         new Thread(() -> tServer.serve()).start();
 
         while (!tServer.isServing()) {
             Thread.sleep(1);
         }
+
         logger.debug("启动服务，监听端口：" + port);
         String address = buildLocalAddress();
         // 注册服务
         if (thriftServerAddressRegister != null) {
             thriftServerAddressRegister.register(serviceName, address);
         }
+
     }
 
     /**
@@ -114,7 +115,7 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
      * @throws SocketException
      */
     private String buildLocalAddress() throws SocketException {
-        String localIp = LocalAddressResolve.findLocalIp();
+        String localIp = LocalIpResolve.get();
         if (StringUtils.isNotBlank(ipString) && !ipString.contains(localIp)) {
             throw new ThriftException("ip地址异常");
         }
@@ -131,16 +132,24 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
         }
     }
 
-    public String getThriftConfigPath() {
-        return thriftConfigPath;
-    }
-
-    public void setThriftConfigPath(String thriftConfigPath) {
-        this.thriftConfigPath = thriftConfigPath;
-    }
 
     public int getPort() {
         return port;
     }
 
+    public int getSelectorThreads() {
+        return selectorThreads;
+    }
+
+    public void setSelectorThreads(int selectorThreads) {
+        this.selectorThreads = selectorThreads;
+    }
+
+    public int getWorkerThreads() {
+        return workerThreads;
+    }
+
+    public void setWorkerThreads(int workerThreads) {
+        this.workerThreads = workerThreads;
+    }
 }

@@ -10,9 +10,11 @@ import org.apache.zookeeper.CreateMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.UUID;
 
 /**
  * thrift server地址注册实现类
@@ -20,10 +22,14 @@ import java.io.UnsupportedEncodingException;
 @Service("thriftServerAddressRegister")
 public class ThriftServerAddressRegisterImpl implements ThriftServerAddressRegister {
     public static final Logger logger = LoggerFactory.getLogger(ThriftServerAddressRegister.class);
+
+    public static final String PATH_SEPARATOR = "/";
+
+    @Value("${zookeeper.basePath}")
+    private String basePath = "/sxs-services";
+
     @Autowired
     private CuratorFramework zkClient;
-
-    private String basePath = "/sxs-services";
 
     @Override
     public void register(String service, String address) {
@@ -52,7 +58,13 @@ public class ThriftServerAddressRegisterImpl implements ThriftServerAddressRegis
      * @return
      */
     private String buildPath(String serviceName) {
-        return basePath + "/" + serviceName;
+        StringBuilder path = new StringBuilder();
+        path.append(basePath)
+                .append(PATH_SEPARATOR)
+                .append(serviceName)
+                .append(PATH_SEPARATOR)
+                .append(UUID.randomUUID().toString().replaceAll("-", ""));
+        return path.toString();
     }
 
     /**
