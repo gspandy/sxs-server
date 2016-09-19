@@ -1,4 +1,4 @@
-package com.sxs.server.model;
+package com.sxs.server.po;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

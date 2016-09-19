@@ -1,7 +1,7 @@
-package com.sxs.server.service.impl;
+package com.sxs.server.thrift.service.impl;
 
 import com.sxs.server.annotation.ThriftService;
-import com.sxs.server.service.HelloWorldService;
+import com.sxs.server.thrift.service.HelloWorldService;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

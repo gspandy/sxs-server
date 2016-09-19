@@ -2,7 +2,7 @@ package com.sxs.server.dao;
 
 
 import com.sxs.server.annotation.MybatisDao;
-import com.sxs.server.model.User;
+import com.sxs.server.po.User;
 
 /**
  * 用户相关数据操作类 ,mybatis-generator工具生成

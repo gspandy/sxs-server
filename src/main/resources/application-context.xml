@@ -72,7 +72,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="xaMybatisDataSource"/>
         <!--默认是bean首字母小写的映射方式-->
-        <property name="typeAliasesPackage" value="com.sxs.server.model"/>
+        <property name="typeAliasesPackage" value="com.sxs.server.po"/>
         <property name="mapperLocations" value="classpath*:/mybatis/mappings/**/*.xml"/>
         <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
     </bean>
@@ -91,7 +91,7 @@
         <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml"/>
         <property name="persistenceUnitName" value="newPersistenceUnit"/>
         <property name="jtaDataSource" ref="xaJpaDataSource"/>
-        <property name="packagesToScan" value="com.sxs.server.model"/>
+        <property name="packagesToScan" value="com.sxs.server.po"/>
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
         <property name="jpaProperties">
             <props>
@@ -134,6 +134,8 @@
 
     <!--其他配置-->
     <bean id="zkClient" class="com.sxs.server.zookeeper.ZkClientFactoryBean" destroy-method="close"/>
+
+    <bean id="springUtils" class="com.sxs.server.utils.SpringUtils"/>
 
 
 </beans>

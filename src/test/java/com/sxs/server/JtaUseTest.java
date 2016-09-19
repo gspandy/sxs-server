@@ -1,7 +1,7 @@
 package com.sxs.server;
 
 import com.sxs.server.dao.UserDao;
-import com.sxs.server.model.User;
+import com.sxs.server.po.User;
 import com.sxs.server.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
