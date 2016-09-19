@@ -57,6 +57,7 @@ public class SqlCallServiceImpl implements SqlCallService.Iface {
             result.setResult(keyHolder.getKey().toString());
 
         } catch (Exception ex) {
+            logger.error("insertSql:", ex);
             if (ex instanceof BusinessException) {
                 result.setCode(((BusinessException) ex).getCode());
             }

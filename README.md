@@ -1,5 +1,7 @@
 # sxs-server
-基于spring+thrift建立客户端和服务端的通讯
+基于 zookeeper+spring+thrift+spring jdbc建立客户端和服务端的通讯
+
+集成jpa 、mybatis未正式使用
 
 thrift 介绍：
 http://cpper.info/2016/03/18/Thrift-The-Missing-Guide.html
