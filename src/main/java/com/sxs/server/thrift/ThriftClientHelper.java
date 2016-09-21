@@ -1,6 +1,6 @@
 package com.sxs.server.thrift;
 
-import com.sxs.server.utils.ThriftUtil;
+import com.sxs.server.utils.ThriftUtils;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TMultiplexedProtocol;
 import org.apache.thrift.protocol.TProtocol;
@@ -36,11 +36,11 @@ public class ThriftClientHelper {
     public <T> T build(Class<T> thriftClientClass) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
             IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         // 获取实例化对象
-        Class<?> parentClass = ThriftUtil.getParentClass4Client(thriftClientClass);
-        TProtocol tMultiplexedProtocol = new TMultiplexedProtocol(protocol, ThriftUtil.getDefaultName(parentClass));
-        T thriftClient = ThriftUtil.newInstance(thriftClientClass, tMultiplexedProtocol);
+        Class<?> parentClass = ThriftUtils.getParentClass4Client(thriftClientClass);
+        TProtocol tMultiplexedProtocol = new TMultiplexedProtocol(protocol, ThriftUtils.getDefaultName(parentClass));
+        T thriftClient = ThriftUtils.newInstance(thriftClientClass, tMultiplexedProtocol);
         // 获取iface接口
-        Class<?> ifaceClass = ThriftUtil.getThriftServiceIfaceClass(thriftClientClass);
+        Class<?> ifaceClass = ThriftUtils.getThriftServiceIfaceClass(thriftClientClass);
         Object proxy = Proxy.newProxyInstance(thriftClientClass.getClassLoader(), new Class[]{ifaceClass}, new ThriftProxyHandler(thriftClient));
         return (T) proxy;
     }

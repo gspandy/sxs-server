@@ -4,7 +4,7 @@ import com.sxs.server.dao.UserDao;
 import com.sxs.server.po.User;
 import com.sxs.server.repository.UserRepository;
 import com.sxs.server.service.UserService;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +33,13 @@ public class UserServiceImpl implements UserService {
     public void jtaWithSuccess() {
 
         User jpaUser = new User();
-        jpaUser.setUid(RandomStringUtils.randomAlphanumeric(8));
+        jpaUser.setUid(RandomUtils.nextLong(1000, 1000000));
         jpaUser.setUserName("66666");
         jpaUser.setSex("1");
         jpaUser.setPassword("55");
 
         User mybatisUser = new User();
-        mybatisUser.setUid(RandomStringUtils.randomAlphanumeric(8));
+        mybatisUser.setUid(RandomUtils.nextLong(1000, 1000000));
         mybatisUser.setUserName("66666");
         mybatisUser.setSex("1");
         mybatisUser.setPassword("55");
@@ -57,13 +57,13 @@ public class UserServiceImpl implements UserService {
     public void jtaWithFail() {
 
         User jpaUser = new User();
-        jpaUser.setUid("7777");
+        jpaUser.setUid(777l);
         jpaUser.setUserName("66666");
         jpaUser.setSex("1");
         jpaUser.setPassword("55");
 
         User mybatisUser = new User();
-        mybatisUser.setUid("8888");
+        mybatisUser.setUid(8888l);
         mybatisUser.setUserName("66666");
         mybatisUser.setSex("1");
         mybatisUser.setPassword("55");

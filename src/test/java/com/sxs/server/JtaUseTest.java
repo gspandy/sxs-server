@@ -41,7 +41,7 @@ public class JtaUseTest {
     @Test
     public void testMybatis() {
         User user = new User();
-        user.setUid("444");
+        user.setUid(444l);
         user.setUserName("test");
         user.setSex("1");
         user.setPassword("4321");

@@ -45,7 +45,7 @@ public class ZkClientFactoryBean implements FactoryBean<CuratorFramework>, Close
     }
 
     private static CuratorFramework newClient(String connectString, int sessionTimeout, int connectionTimeout) {
-        zkClient = CuratorFrameworkFactory.newClient(connectString, sessionTimeout, connectionTimeout, new ExponentialBackoffRetry(1000, 3));
+        zkClient = CuratorFrameworkFactory.newClient(connectString, sessionTimeout, connectionTimeout, new ExponentialBackoffRetry(1000, Integer.MAX_VALUE));
         zkClient.start();
         return zkClient;
     }

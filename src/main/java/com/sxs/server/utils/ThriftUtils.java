@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Thrift工具类
  */
-public class ThriftUtil {
+public class ThriftUtils {
 
     public static final String CLIENT_NAME = "$Client";
 

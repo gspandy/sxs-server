@@ -1,4 +1,7 @@
-namespace java com.sxs.thrift.service
+include "header.thrift"
+namespace java com.sxs.server.thrift.service
+namespace php com.sxs.server.thrift.service
+
 /**
 * 操作结果定义
 **/
@@ -12,10 +15,11 @@ struct OperationResult {
 * sql调用参数定义
 **/
 struct SqlCallParameter{
-    1:required string sql;
-    2:required list<string> parameters;
-    3:optional bool isNamed;
-    4:optional map<string,string>parametersMap;
+    1: header.BaseHeader header;
+    2:required string sql;
+    3:required list<string> parameters;
+    4:optional bool isNamed;
+    5:optional map<string,string>parametersMap;
 }
 
  /**

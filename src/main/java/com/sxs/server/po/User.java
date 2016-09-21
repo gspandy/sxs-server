@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Table(name = "t_user")
 public class User implements Serializable {
     @Id
-    private String uid;
+    private Long uid;
     @Column(name = "user_account")
     private String userAccount;
 
@@ -29,12 +29,12 @@ public class User implements Serializable {
 
     private String sex;
 
-    public String getUid() {
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid == null ? null : uid.trim();
+    public void setUid(Long uid) {
+        this.uid = uid ;
     }
 
     public String getUserAccount() {

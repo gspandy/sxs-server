@@ -4,7 +4,7 @@ import com.sxs.server.annotation.ThriftService;
 import com.sxs.server.exception.ThriftException;
 import com.sxs.server.service.ThriftServerAddressRegister;
 import com.sxs.server.utils.LocalIpResolve;
-import com.sxs.server.utils.ThriftUtil;
+import com.sxs.server.utils.ThriftUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.TProcessor;
@@ -83,9 +83,9 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
         for (Map.Entry<String, Object> entry : thriftServices.entrySet()) {
             Object serviceBean = entry.getValue();
             // 获取processor
-            TProcessor processor = ThriftUtil.buildProcessor(serviceBean);
+            TProcessor processor = ThriftUtils.buildProcessor(serviceBean);
             // 注册
-            serviceName = ThriftUtil.getDefaultName(ThriftUtil.getParentClass(serviceBean.getClass()));
+            serviceName = ThriftUtils.getDefaultName(ThriftUtils.getParentClass(serviceBean.getClass()));
             if (logger.isDebugEnabled()) {
                 logger.debug("注册服务组件：" + serviceName + "," + processor.getClass());
             }
