@@ -12,6 +12,25 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <spring.version>4.2.5.RELEASE</spring.version>
+        <spring.data.jpa>1.10.2.RELEASE</spring.data.jpa>
+        <mybatis.version>3.2.8</mybatis.version>
+        <spring.mybatis.version>1.2.0</spring.mybatis.version>
+        <hibernate.version>4.3.6.Final</hibernate.version>
+        <atomikos.version>4.0.4</atomikos.version>
+        <servlet.api.version>2.5</servlet.api.version>
+        <httpclient.version>4.4.1</httpclient.version>
+        <commons.lang3.version>3.4</commons.lang3.version>
+        <commons.collections.version>3.2.1</commons.collections.version>
+        <fastjson.version>1.2.7</fastjson.version>
+        <mysql.version>5.1.30</mysql.version>
+        <slf4j.version>1.7.12</slf4j.version>
+        <sysout.over.version>1.0.2</sysout.over.version>
+        <log4j.version>1.2.17</log4j.version>
+        <junit.version>4.9</junit.version>
+        <zookeeper.version>3.4.8</zookeeper.version>
+        <curator.version>2.11.0</curator.version>
+
     </properties>
 
 
@@ -20,7 +39,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>4.2.5.RELEASE</version>
+                <version>${spring.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -57,35 +76,35 @@
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
-            <version>1.2.0</version>
+            <version>${spring.mybatis.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-            <version>3.2.8</version>
+            <version>${mybatis.version}</version>
         </dependency>
 
         <!--hibernate-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>4.3.6.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.3.6.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.atomikos</groupId>
             <artifactId>transactions-jdbc</artifactId>
-            <version>4.0.4</version>
+            <version>${atomikos.version}</version>
         </dependency>
         <dependency>
             <groupId>com.atomikos</groupId>
             <artifactId>transactions-hibernate4</artifactId>
-            <version>4.0.4</version>
+            <version>${atomikos.version}</version>
         </dependency>
 
         <!--thrift包-->
@@ -99,81 +118,81 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <version>${servlet.api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.4.1</version>
+            <version>${httpclient.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
-            <version>4.4.1</version>
+            <version>${httpclient.version}</version>
         </dependency>
 
         <!--apache的工具库-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
+            <version>${commons.lang3.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
+            <version>${commons.collections.version}</version>
         </dependency>
 
         <!--json处理模块-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.7</version>
+            <version>${fastjson.version}</version>
         </dependency>
         <!--mysql驱动-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.30</version>
+            <version>${mysql.version}</version>
         </dependency>
         <!--日志-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.12</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>
-            <version>1.7.12</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.org.lidalia</groupId>
             <artifactId>sysout-over-slf4j</artifactId>
-            <version>1.0.2</version>
+            <version>${sysout.over.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.12</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.12</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <version>${log4j.version}</version>
         </dependency>
         <!--测试-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.9</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -181,22 +200,32 @@
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
-            <version>3.4.8</version>
+            <version>${zookeeper.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-recipes</artifactId>
-            <version>2.11.0</version>
+            <version>${curator.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-x-discovery</artifactId>
-            <version>2.11.0</version>
+            <version>${curator.version}</version>
         </dependency>
 
     </dependencies>
 
     <build>
+        <filters>
+            <filter>${project.basedir}/src/main/profiles/${profiles.active}.config</filter>
+        </filters>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -208,7 +237,7 @@
                 </configuration>
             </plugin>
 
-            <!--http://www.mojohaus.org/appassembler/appassembler-maven-plugin/usage-daemon-structure.html-->
+            <!--打包并生成脚本文件 jsw:java service wrapper-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>appassembler-maven-plugin</artifactId>
@@ -286,8 +315,8 @@
                                 </systemProperties>
                                 <extraArguments>
                                     <extraArgument>-server</extraArgument>
-                                    <extraArgument>-Xmx512M</extraArgument>
-                                    <extraArgument>-Xms512M</extraArgument>
+                                    <extraArgument>-Xmx1G</extraArgument>
+                                    <extraArgument>-Xms1G</extraArgument>
                                 </extraArguments>
                             </jvmSettings>
                         </daemon>
@@ -297,5 +326,29 @@
         </plugins>
 
     </build>
+    <!--环境设置-->
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <properties>
+                <profiles.active>develop</profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>product</id>
+            <properties>
+                <profiles.active>product</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <profiles.active>test</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
