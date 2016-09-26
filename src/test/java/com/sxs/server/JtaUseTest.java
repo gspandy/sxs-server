@@ -1,7 +1,6 @@
 package com.sxs.server;
 
 import com.sxs.server.dao.UserDao;
-import com.sxs.server.po.User;
 import com.sxs.server.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,7 +17,7 @@ import java.util.List;
  * spring-junit测试类
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:application-context.xml", "classpath:application-context.xml"})
+@ContextConfiguration({"classpath:application-context.xml"})
 public class JtaUseTest {
 
     @Autowired
@@ -40,12 +39,13 @@ public class JtaUseTest {
 
     @Test
     public void testMybatis() {
-        User user = new User();
-        user.setUid(444l);
-        user.setUserName("test");
-        user.setSex("1");
-        user.setPassword("4321");
-        userDao.insert(user);
+//        userDao.deleteByPrimaryKey(4441L);
+//        User user = new User();
+//        user.setUid(444L);
+//        user.setUserName("test");
+//        user.setSex("1");
+//        user.setPassword("4321");
+//        userDao.insert(user);
     }
 
     @Test

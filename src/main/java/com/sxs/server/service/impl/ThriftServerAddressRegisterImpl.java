@@ -9,7 +9,6 @@ import org.apache.curator.framework.imps.CuratorFrameworkState;
 import org.apache.zookeeper.CreateMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +27,6 @@ public class ThriftServerAddressRegisterImpl implements ThriftServerAddressRegis
     @Value("${zookeeper.basePath}")
     private String basePath = "/sxs-services";
 
-    @Autowired
     private CuratorFramework zkClient;
 
     @Override
@@ -79,4 +77,8 @@ public class ThriftServerAddressRegisterImpl implements ThriftServerAddressRegis
         return JSON.toJSONBytes(serviceDescription);
     }
 
+
+    public void setZkClient(CuratorFramework zkClient) {
+        this.zkClient = zkClient;
+    }
 }

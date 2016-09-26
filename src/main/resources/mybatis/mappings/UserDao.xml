@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sxs.server.dao.UserDao">
     <resultMap id="BaseResultMap" type="user">
-        <id column="uid" property="uid" jdbcType="VARCHAR"/>
+        <id column="uid" property="uid" jdbcType="INTEGER"/>
         <result column="user_account" property="userAccount" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
@@ -14,21 +14,21 @@
     <sql id="Base_Column_List">
     uid, user_account, phone, user_name, password, email, address, sex
   </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
         from t_user
-        where uid = #{uid,jdbcType=VARCHAR}
+        where uid = #{uid,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_user
-    where uid = #{uid,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="user">
     insert into t_user (uid, user_account, phone, 
       user_name, password, email, 
       address, sex)
-    values (#{uid,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+    values (#{uid,jdbcType=INTEGER}, #{userAccount,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
       #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR})
   </insert>
@@ -62,7 +62,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="uid != null">
-                #{uid,jdbcType=VARCHAR},
+                #{uid,jdbcType=INTEGER},
             </if>
             <if test="userAccount != null">
                 #{userAccount,jdbcType=VARCHAR},
@@ -112,7 +112,7 @@
                 sex = #{sex,jdbcType=VARCHAR},
             </if>
         </set>
-        where uid = #{uid,jdbcType=VARCHAR}
+        where uid = #{uid,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="user">
     update t_user
@@ -123,6 +123,6 @@
       email = #{email,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR}
-    where uid = #{uid,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </update>
 </mapper>

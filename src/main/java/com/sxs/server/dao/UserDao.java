@@ -15,7 +15,7 @@ public interface UserDao {
      * @param uid
      * @return
      */
-    int deleteByPrimaryKey(String uid);
+    int deleteByPrimaryKey(Long uid);
 
     /**
      * 插入用户
@@ -39,7 +39,7 @@ public interface UserDao {
      * @param uid
      * @return
      */
-    User selectByPrimaryKey(String uid);
+    User selectByPrimaryKey(Long uid);
 
     /***
      * 通过主键更新

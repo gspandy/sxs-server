@@ -7,6 +7,14 @@
     <groupId>com.sxs.vault</groupId>
     <artifactId>sxs-server</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -18,7 +26,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
 
     <dependencies>
         <!--spring 相关-->
@@ -81,14 +88,14 @@
             <version>4.0.4</version>
         </dependency>
 
-
         <!--thrift包-->
-        <!--<dependency>-->
-        <!--<groupId>org.apache.thrift</groupId>-->
-        <!--<artifactId>libthrift</artifactId>-->
-        <!--<version>0.9.3</version>-->
-        <!--</dependency>-->
-
+        <!--
+        <dependency>
+        <groupId>org.apache.thrift</groupId>
+        <artifactId>libthrift</artifactId>
+        <version>0.9.3</version>
+        </dependency>
+        -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -117,11 +124,7 @@
             <artifactId>commons-collections</artifactId>
             <version>3.2.1</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>commons-pool</groupId>-->
-        <!--<artifactId>commons-pool</artifactId>-->
-        <!--<version>1.6</version>-->
-        <!--</dependency>-->
+
         <!--json处理模块-->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -191,7 +194,6 @@
             <version>2.11.0</version>
         </dependency>
 
-
     </dependencies>
 
     <build>
@@ -205,7 +207,95 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <!--http://www.mojohaus.org/appassembler/appassembler-maven-plugin/usage-daemon-structure.html-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.10</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <id>sxsServer</id>
+                        <goals>
+                            <goal>generate-daemons</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- 根目录 -->
+                    <assembleDirectory>${project.build.directory}/serverassemble</assembleDirectory>
+                    <!-- 打包的jar，以及maven依赖的jar放到这个目录里面 -->
+                    <repositoryName>lib</repositoryName>
+                    <!-- 可执行脚本的目录 -->
+                    <binFolder>bin</binFolder>
+                    <!-- 配置文件的目标目录 -->
+                    <configurationDirectory>conf</configurationDirectory>
+                    <!-- 拷贝配置文件到上面的目录中 -->
+                    <!--<copyConfigurationDirectory>true</copyConfigurationDirectory>-->
+                    <!-- 从哪里拷贝配置文件 (默认src/main/config) -->
+                    <!--<configurationSourceDirectory>src/main/resources</configurationSourceDirectory>-->
+                    <!-- lib目录中jar的存放规则，默认是${groupId}/${artifactId}的目录格式，flat表示直接把jar放到lib目录 -->
+                    <repositoryLayout>flat</repositoryLayout>
+                    <encoding>UTF-8</encoding>
+                    <logsDirectory>logs</logsDirectory>
+                    <tempDirectory>tmp</tempDirectory>
+                    <daemons>
+                        <daemon>
+                            <id>sxsServer</id>
+                            <mainClass>com.sxs.server.ServerMain</mainClass>
+                            <platforms>
+                                <platform>jsw</platform>
+                            </platforms>
+                            <generatorConfigurations>
+                                <generatorConfiguration>
+                                    <generator>jsw</generator>
+                                    <includes>
+                                        <include>linux-x86-32</include>
+                                        <include>linux-x86-64</include>
+                                        <include>windows-x86-32</include>
+                                        <include>windows-x86-64</include>
+                                    </includes>
+                                    <configuration>
+                                        <property>
+                                            <name>configuration.directory.in.classpath.first</name>
+                                            <value>conf</value>
+                                        </property>
+                                        <property>
+                                            <name>wrapper.ping.timeout</name>
+                                            <value>120</value>
+                                        </property>
+                                        <property>
+                                            <name>set.default.REPO_DIR</name>
+                                            <value>lib</value>
+                                        </property>
+                                        <property>
+                                            <name>wrapper.logfile</name>
+                                            <value>logs/wrapper.log</value>
+                                        </property>
+                                    </configuration>
+                                </generatorConfiguration>
+                            </generatorConfigurations>
+                            <jvmSettings>
+                                <!-- jvm参数 -->
+                                <systemProperties>
+                                    <systemProperty>com.sun.management.jmxremote</systemProperty>
+                                    <systemProperty>com.sun.management.jmxremote.port=1984</systemProperty>
+                                    <systemProperty>com.sun.management.jmxremote.authenticate=false</systemProperty>
+                                    <systemProperty>com.sun.management.jmxremote.ssl=false</systemProperty>
+                                </systemProperties>
+                                <extraArguments>
+                                    <extraArgument>-server</extraArgument>
+                                    <extraArgument>-Xmx512M</extraArgument>
+                                    <extraArgument>-Xms512M</extraArgument>
+                                </extraArguments>
+                            </jvmSettings>
+                        </daemon>
+                    </daemons>
+                </configuration>
+            </plugin>
         </plugins>
+
     </build>
 
 </project>

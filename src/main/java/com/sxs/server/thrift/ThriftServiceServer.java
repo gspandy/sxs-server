@@ -4,8 +4,10 @@ import com.sxs.server.annotation.ThriftService;
 import com.sxs.server.exception.ThriftException;
 import com.sxs.server.service.ThriftServerAddressRegister;
 import com.sxs.server.utils.LocalIpResolve;
+import com.sxs.server.utils.SpringUtils;
 import com.sxs.server.utils.ThriftUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.curator.framework.CuratorFramework;
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -48,6 +50,9 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
 
     @Value("${thrift.workerThreads}")
     private int workerThreads = 32;
+
+    @Value("${zookeeper.enable}")
+    private boolean zookeeperEnable = false;
 
     /**
      * 服务注册
@@ -100,10 +105,13 @@ public class ThriftServiceServer implements ApplicationContextAware, Application
         }
 
         logger.debug("启动服务，监听端口：" + port);
-        String address = buildLocalAddress();
-        // 注册服务
-        if (thriftServerAddressRegister != null) {
-            thriftServerAddressRegister.register(serviceName, address);
+        if (zookeeperEnable) {
+            String address = buildLocalAddress();
+            // 注册服务
+            if (thriftServerAddressRegister != null) {
+                thriftServerAddressRegister.setZkClient(SpringUtils.getBean(CuratorFramework.class));
+                thriftServerAddressRegister.register(serviceName, address);
+            }
         }
 
     }
