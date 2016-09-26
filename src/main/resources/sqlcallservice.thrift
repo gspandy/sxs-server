@@ -1,6 +1,7 @@
-include "header.thrift"
 namespace java com.sxs.server.thrift.service
 namespace php com.sxs.server.thrift.service
+
+include "header.thrift"
 
 /**
 * 操作结果定义

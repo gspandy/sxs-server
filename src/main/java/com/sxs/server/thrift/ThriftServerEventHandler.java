@@ -48,7 +48,7 @@ class ThriftServerEventHandler implements TServerEventHandler {
                 logger.error("获取客户端ip地址失败, connection #" + ctx.getConnectionId(), e);
             }
             logger.info("ThriftServer client Socket Info - connection #" + ctx.getConnectionId()
-                    + " , server地址: " + remoteAddress + " , client地址: " + localAddress);
+                    + " , client地址: " + remoteAddress + " , Server地址: " + localAddress);
 
 
         }

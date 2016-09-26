@@ -7,7 +7,7 @@
     <!--配置自动扫描组件-->
     <context:component-scan base-package="com.sxs.server"/>
     <!--加载配置文件-->
-    <context:property-placeholder location="datasource.properties,app.properties" null-value=""/>
+    <context:property-placeholder location="app-config.properties" null-value=""/>
 
     <!--数据源事物配置 start-->
     <bean id="xaJdbcDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init"

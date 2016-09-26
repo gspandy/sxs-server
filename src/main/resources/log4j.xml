@@ -8,16 +8,37 @@
         </layout>
         <!--过滤器设置输出的级别-->
         <filter class="org.apache.log4j.varia.LevelRangeFilter">
-            <param name="levelMin" value="trace"/>
+            <param name="levelMin" value="debug"/>
             <param name="levelMax" value="error"/>
             <param name="AcceptOnMatch" value="true"/>
         </filter>
     </appender>
 
+    <appender name="file" class="org.apache.log4j.RollingFileAppender">
+        <param name="Threshold" value="info"/>
+        <param name="File" value="./logs/output.log"/>
+        <param name="MaxFileSize" value="10MB"/>
+        <param name="MaxBackupIndex" value="10"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS\}] [%-5p] [%t] %l  - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="errorFile" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Threshold" value="error"/>
+        <param name="File" value="./logs/error.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS\}] [%-5p] [%t] %l  - %m%n"/>
+        </layout>
+    </appender>
+
     <!-- 根logger的设置-->
     <root>
-        <level value="trace"/>
+        <level value="DEBUG"/>
         <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+        <appender-ref ref="errorFile"/>
     </root>
 
 
