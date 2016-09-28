@@ -402,18 +402,18 @@
     <!--环境设置-->
     <profiles>
         <profile>
-            <id>develop</id>
+            <id>local</id>
             <properties>
-                <profiles.active>develop</profiles.active>
+                <profiles.active>local</profiles.active>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
         <profile>
-            <id>product</id>
+            <id>develop</id>
             <properties>
-                <profiles.active>product</profiles.active>
+                <profiles.active>develop</profiles.active>
             </properties>
             <build>
                 <plugins>
@@ -461,11 +461,18 @@
                                 <configuration>
                                     <url>scp://test:sxstest2016@123.56.207.230/</url>
                                     <commands>
-                                        <command>chmod +x /home/test/local/work2/approot/sxsServer/bin/sxsServer</command>
-                                        <command>chmod +x /home/test/local/work2/approot/sxsServer/bin/wrapper-linux-x86-32</command>
-                                        <command>chmod +x /home/test/local/work2/approot/sxsServer/bin/wrapper-linux-x86-64 </command>
+                                        <command>chmod +x /home/test/local/work2/approot/sxsServer/bin/sxsServer
+                                        </command>
+                                        <command>chmod +x
+                                            /home/test/local/work2/approot/sxsServer/bin/wrapper-linux-x86-32
+                                        </command>
+                                        <command>chmod +x
+                                            /home/test/local/work2/approot/sxsServer/bin/wrapper-linux-x86-64
+                                        </command>
                                         <command>/home/test/local/work2/approot/sxsServer/bin/sxsServer stop</command>
                                         <command>/home/test/local/work2/approot/sxsServer/bin/sxsServer start</command>
+                                        <command>tail -f /home/test/local/work2/approot/sxsServer/logs/wrapper.log
+                                        </command>
                                     </commands>
                                     <!-- 显示运行命令的输出结果 -->
                                     <displayCommandOutputs>true</displayCommandOutputs>
@@ -475,6 +482,13 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>product</id>
+            <properties>
+                <profiles.active>product</profiles.active>
+            </properties>
+
         </profile>
         <profile>
             <id>test</id>

@@ -15,7 +15,7 @@
     </appender>
 
     <appender name="file" class="org.apache.log4j.RollingFileAppender">
-        <param name="Threshold" value="debug"/>
+        <param name="Threshold" value="info"/>
         <param name="File" value="./logs/output.log"/>
         <param name="MaxFileSize" value="10MB"/>
         <param name="MaxBackupIndex" value="10"/>
