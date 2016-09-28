@@ -2,7 +2,6 @@ package com.sxs.server.service.impl;
 
 import com.sxs.server.dao.UserDao;
 import com.sxs.server.po.User;
-import com.sxs.server.repository.UserRepository;
 import com.sxs.server.service.UserService;
 import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
@@ -20,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
     public static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    @Autowired
-    private UserRepository userRepository;
     @Autowired
     private UserDao userDao;
 
@@ -43,8 +40,6 @@ public class UserServiceImpl implements UserService {
         mybatisUser.setUserName("66666");
         mybatisUser.setSex("1");
         mybatisUser.setPassword("55");
-        //jpa事物
-        userRepository.save(jpaUser);
         //mybatis事物
         userDao.insert(mybatisUser);
     }
@@ -68,7 +63,6 @@ public class UserServiceImpl implements UserService {
         mybatisUser.setSex("1");
         mybatisUser.setPassword("55");
         //jpa事物
-        userRepository.save(jpaUser);
         //mybatis事物
         userDao.insert(mybatisUser);
     }

@@ -9,6 +9,13 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <repositories>
+        <repository>
+            <id>maven repo1</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -106,6 +113,7 @@
             <artifactId>transactions-hibernate4</artifactId>
             <version>${atomikos.version}</version>
         </dependency>
+
 
         <!--thrift包-->
         <!--
@@ -216,6 +224,20 @@
     </dependencies>
 
     <build>
+
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>2.10</version>
+            </extension>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-2</version>
+            </extension>
+        </extensions>
+
         <filters>
             <filter>${project.basedir}/src/main/profiles/${profiles.active}.config</filter>
         </filters>
@@ -223,6 +245,12 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+            </resource>
+            <!--复制一份资源，部署时使用-->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <targetPath>${basedir}/target/extra-resources</targetPath>
             </resource>
         </resources>
 
@@ -234,6 +262,51 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!--<plugin>-->
+            <!--<artifactId>maven-resources-plugin</artifactId>-->
+            <!--<version>3.0.1</version>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>copy-resources</id>-->
+            <!--<phase>prepare-package</phase>-->
+            <!--<goals>-->
+            <!--<goal>copy-resources</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<outputDirectory>${basedir}/target/extra-resources</outputDirectory>-->
+            <!--<filters>-->
+            <!--<filter>${project.basedir}/src/main/profiles/${profiles.active}.config</filter>-->
+            <!--</filters>-->
+            <!--<resources>-->
+            <!--<resource>-->
+            <!--<directory>src/main/resources</directory>-->
+            <!--<filtering>true</filtering>-->
+            <!--</resource>-->
+            <!--</resources>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            **/*.xml
+                        </exclude>
+                        <exclude>
+                            **/*.thrift
+                        </exclude>
+                        <exclude>
+                            **/*.properties
+                        </exclude>
+                    </excludes>
                 </configuration>
             </plugin>
 
@@ -261,9 +334,9 @@
                     <!-- 配置文件的目标目录 -->
                     <configurationDirectory>conf</configurationDirectory>
                     <!-- 拷贝配置文件到上面的目录中 -->
-                    <!--<copyConfigurationDirectory>true</copyConfigurationDirectory>-->
+                    <copyConfigurationDirectory>true</copyConfigurationDirectory>
                     <!-- 从哪里拷贝配置文件 (默认src/main/config) -->
-                    <!--<configurationSourceDirectory>src/main/resources</configurationSourceDirectory>-->
+                    <configurationSourceDirectory>target/extra-resources</configurationSourceDirectory>
                     <!-- lib目录中jar的存放规则，默认是${groupId}/${artifactId}的目录格式，flat表示直接把jar放到lib目录 -->
                     <repositoryLayout>flat</repositoryLayout>
                     <encoding>UTF-8</encoding>
@@ -315,14 +388,14 @@
                                 </systemProperties>
                                 <extraArguments>
                                     <extraArgument>-server</extraArgument>
-                                    <extraArgument>-Xmx1G</extraArgument>
-                                    <extraArgument>-Xms1G</extraArgument>
+                                    <extraArgument>-Xms128M</extraArgument>
                                 </extraArguments>
                             </jvmSettings>
                         </daemon>
                     </daemons>
                 </configuration>
             </plugin>
+
         </plugins>
 
     </build>
@@ -342,6 +415,66 @@
             <properties>
                 <profiles.active>product</profiles.active>
             </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>wagon-maven-plugin</artifactId>
+                        <version>1.0</version>
+                        <configuration>
+                            <fromFile>target/test.jar</fromFile>
+                            <url>scp://test:sxstest2016@123.56.207.230/home/test/local/work2/approot</url>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>wagon-maven-plugin</artifactId>
+                        <version>1.0</version>
+                        <executions>
+                            <execution>
+                                <id>upload</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>upload</goal>
+                                </goals>
+                                <configuration>
+                                    <url>scp://test:sxstest2016@123.56.207.230/home/test/local/work2/approot</url>
+                                    <fromDir>target\generated-resources\appassembler\jsw\sxsServer</fromDir>
+                                    <toDir>sxsServer</toDir>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>wagon-maven-plugin</artifactId>
+                        <version>1.0</version>
+                        <executions>
+                            <execution>
+                                <id>execute-commands</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>sshexec</goal>
+                                </goals>
+                                <configuration>
+                                    <url>scp://test:sxstest2016@123.56.207.230/</url>
+                                    <commands>
+                                        <command>chmod +x /home/test/local/work2/approot/sxsServer/bin/sxsServer</command>
+                                        <command>chmod +x /home/test/local/work2/approot/sxsServer/bin/wrapper-linux-x86-32</command>
+                                        <command>chmod +x /home/test/local/work2/approot/sxsServer/bin/wrapper-linux-x86-64 </command>
+                                        <command>/home/test/local/work2/approot/sxsServer/bin/sxsServer stop</command>
+                                        <command>/home/test/local/work2/approot/sxsServer/bin/sxsServer start</command>
+                                    </commands>
+                                    <!-- 显示运行命令的输出结果 -->
+                                    <displayCommandOutputs>true</displayCommandOutputs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>test</id>

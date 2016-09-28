@@ -2,8 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
     <!--配置自动扫描组件-->
     <context:component-scan base-package="com.sxs.server"/>
     <!--加载配置文件-->
@@ -82,36 +81,6 @@
         <!-- 扫描basePackage下所有以@MybatisDao注解的接口 -->
         <property name="annotationClass" value="com.sxs.server.annotation.MybatisDao"/>
     </bean>
-    <!--jpa配置-->
-    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-          p:showSql="false"
-          p:generateDdl="false"/>
-    <bean id="atomikosPlatform" class="com.atomikos.icatch.jta.hibernate4.AtomikosPlatform"></bean>
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml"/>
-        <property name="persistenceUnitName" value="newPersistenceUnit"/>
-        <property name="jtaDataSource" ref="xaJpaDataSource"/>
-        <property name="packagesToScan" value="com.sxs.server.po"/>
-        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
-        <property name="jpaProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-                <prop key="hibernate.max_fetch_depth">3</prop>
-                <!--设置外连接抓取树的最大深度 -->
-                <prop key="hibernate.max_fetch_depth">3</prop>
-                <!--自动输出schema创建DDL语句 -->
-                <prop key="hibernate.hbm2ddl.auto">false</prop>
-                <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.format_sql">false</prop>
-                <prop key="hibernate.transaction.jta.platform">com.atomikos.icatch.jta.hibernate4.AtomikosPlatform
-                </prop>
-            </props>
-        </property>
-    </bean>
-    <jpa:repositories base-package="com.sxs.server.repository"
-                      transaction-manager-ref="transactionManager"
-                      entity-manager-factory-ref="entityManagerFactory"
-                      repository-impl-postfix="Impl"/>
 
     <!--atomikos事物配置 -->
     <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init"
