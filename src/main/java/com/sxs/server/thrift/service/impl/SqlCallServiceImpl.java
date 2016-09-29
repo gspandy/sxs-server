@@ -43,8 +43,9 @@ public class SqlCallServiceImpl implements SqlCallService.Iface {
         String parameterLogString = LogHandleUtils.handleLog(sqlCallParameter);
         OperationResult result = new OperationResult();
         result.setSuccess(true);
+        result.setMessage("执行成功");
         try {
-            logger.info("insertSql ## {}", parameterLogString);
+//            logger.info("insertSql ## {}", parameterLogString);
             Validate.notEmpty(sqlCallParameter, "sql", "parameters");
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate = fetchJdbcTemplate();
@@ -64,7 +65,7 @@ public class SqlCallServiceImpl implements SqlCallService.Iface {
                 }
             }, keyHolder);
             result.setResult(keyHolder.getKey().toString());
-            logger.info("插入成功:{}", LogHandleUtils.handleLog(result));
+//            logger.info("插入成功:{}", LogHandleUtils.handleLog(result));
         } catch (Exception ex) {
             logger.error("insertSql:{}", parameterLogString, ex);
             if (ex instanceof BusinessException) {
@@ -88,13 +89,14 @@ public class SqlCallServiceImpl implements SqlCallService.Iface {
         String parameterLogString = LogHandleUtils.handleLog(sqlCallParameter);
         OperationResult result = new OperationResult();
         result.setSuccess(true);
+        result.setMessage("执行成功");
         try {
-            logger.info("selectSql ## {}", parameterLogString);
+//            logger.info("selectSql ## {}", parameterLogString);
             Validate.notEmpty(sqlCallParameter, "sql", "parameters");
             jdbcTemplate = fetchJdbcTemplate();
             List<Map<String, Object>> mapList = jdbcTemplate.query(sqlCallParameter.getSql(), sqlCallParameter.getParameters().toArray(), new ColumnMapRowMapper());
             result.setResult(JSON.toJSONString(mapList));
-            logger.info("查询成功:{}", LogHandleUtils.handleLog(result));
+//            logger.info("查询成功:{}", LogHandleUtils.handleLog(result));
         } catch (Exception ex) {
             logger.error("selectSql:{}", parameterLogString, ex);
             if (ex instanceof BusinessException) {
@@ -118,13 +120,14 @@ public class SqlCallServiceImpl implements SqlCallService.Iface {
         String parameterLogString = LogHandleUtils.handleLog(sqlCallParameter);
         OperationResult result = new OperationResult();
         result.setSuccess(true);
+        result.setMessage("执行成功");
         try {
-            logger.info("updateSql ## {}", parameterLogString);
+//            logger.info("updateSql ## {}", parameterLogString);
             Validate.notEmpty(sqlCallParameter, "sql", "parameters");
             jdbcTemplate = fetchJdbcTemplate();
             int r = jdbcTemplate.update(sqlCallParameter.getSql(), sqlCallParameter.getParameters().toArray());
             result.setResult(String.valueOf(r));
-            logger.info("更新成功:{}", LogHandleUtils.handleLog(result));
+//            logger.info("更新成功:{}", LogHandleUtils.handleLog(result));
         } catch (Exception ex) {
             logger.error("updateSql:{}", parameterLogString, ex);
             if (ex instanceof BusinessException) {
@@ -148,13 +151,14 @@ public class SqlCallServiceImpl implements SqlCallService.Iface {
         String parameterLogString = LogHandleUtils.handleLog(sqlCallParameter);
         OperationResult result = new OperationResult();
         result.setSuccess(true);
+        result.setMessage("执行成功");
         try {
-            logger.info("deleteSql ## {}", parameterLogString);
+//            logger.info("deleteSql ## {}", parameterLogString);
             Validate.notEmpty(sqlCallParameter, "sql", "parameters");
             jdbcTemplate = fetchJdbcTemplate();
             int r = jdbcTemplate.update(sqlCallParameter.getSql(), sqlCallParameter.getParameters().toArray());
             result.setResult(String.valueOf(r));
-            logger.info("删除成功:{}", LogHandleUtils.handleLog(result));
+//            logger.info("删除成功:{}", LogHandleUtils.handleLog(result));
         } catch (Exception ex) {
             logger.error("deleteSql:{}", parameterLogString, ex);
             if (ex instanceof BusinessException) {
@@ -177,8 +181,9 @@ public class SqlCallServiceImpl implements SqlCallService.Iface {
         String parameterLogString = LogHandleUtils.handleLog(parameterList);
         OperationResult result = new OperationResult();
         result.setSuccess(true);
+        result.setMessage("执行成功");
         try {
-            logger.info("batchOperationSql ## {}", parameterLogString);
+//            logger.info("batchOperationSql ## {}", parameterLogString);
             if (parameterList == null) {
                 throw new BusinessException(ExceptionEnum.PARAMETER_NULL_EXCEPTION);
             }
@@ -187,7 +192,7 @@ public class SqlCallServiceImpl implements SqlCallService.Iface {
                 jdbcTemplate.update(sqlCallParameter.getSql(), sqlCallParameter.getParameters());
             }
             result.setResult("");
-            logger.info("批执行成功:{}", parameterLogString);
+//            logger.info("批执行成功:{}", parameterLogString);
         } catch (Exception ex) {
             logger.error("batchOperationSql:{}", parameterLogString, ex);
             if (ex instanceof BusinessException) {

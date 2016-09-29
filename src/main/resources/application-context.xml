@@ -2,7 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
     <!--配置自动扫描组件-->
     <context:component-scan base-package="com.sxs.server"/>
     <!--加载配置文件-->
@@ -105,6 +106,19 @@
     <bean id="zkClient" class="com.sxs.server.zookeeper.ZkClientFactoryBean" destroy-method="close"/>
 
     <bean id="springUtils" class="com.sxs.server.utils.SpringUtils"/>
+    <!--执行时间拦截器-->
+    <bean id="timeInterceptor" class="com.sxs.server.interceptor.TimeInterceptor"></bean>
+    <!--日志拦截器-->
+    <bean id="logInterceptor" class="com.sxs.server.interceptor.LogInterceptor"></bean>
+    <!--拦截器aop配置-->
+    <aop:config>
+        <!--切入点-->
+        <aop:pointcut id="methodPoint" expression="execution(public * com.sxs.server.thrift.service.impl.*.*(..)) "/>
+        <!--在该切入点使用自定义拦截器-->
+        <aop:advisor pointcut-ref="methodPoint" advice-ref="timeInterceptor"/>
+        <aop:advisor pointcut-ref="methodPoint" advice-ref="logInterceptor"/>
+
+    </aop:config>
 
 
 </beans>

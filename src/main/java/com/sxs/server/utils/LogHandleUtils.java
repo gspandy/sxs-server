@@ -27,8 +27,7 @@ public class LogHandleUtils {
         StringBuilder builder = new StringBuilder();
         builder.append("{ ")
                 .append("\"success\":").append(operationResult.isSuccess()).append(",")
-                .append("\"code\":").append(operationResult.getCode()).append(",")
-                .append("\"result\":").append(operationResult.getResult())
+                .append("\"code\":").append(operationResult.getCode())
                 .append(" }");
         return builder.toString();
     }

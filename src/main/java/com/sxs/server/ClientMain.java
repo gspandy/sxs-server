@@ -51,7 +51,7 @@ public class ClientMain {
         SqlCallService.Iface sqlCallServiceClient = builder.build(SqlCallService.Client.class);
         builder.open();
         //调用远程服务
-        BaseHeader baseHeader = new BaseHeader("1.0.0", Direction.REQ, UUID.randomUUID().toString(), "127.0.0.1", 9091);
+        BaseHeader baseHeader = new BaseHeader("1.0.0", Direction.REQ, UUID.randomUUID().toString().replaceAll("-", ""), "127.0.0.1", 9091);
         //insert
         SqlCallParameter sqlCallParameter = new SqlCallParameter(baseHeader, "select * from  vault_user  where id=291", new ArrayList<>());
         OperationResult operationResult = sqlCallServiceClient.selectSql(sqlCallParameter);

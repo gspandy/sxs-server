@@ -73,6 +73,20 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.7.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.7.4</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -436,29 +450,28 @@
             <properties>
                 <profiles.active>develop</profiles.active>
             </properties>
-            <!--<build>-->
-                <!--<plugins>-->
+            <build>
+                <plugins>
 
-                    <!--<plugin>-->
-                        <!--<groupId>org.codehaus.mojo</groupId>-->
-                        <!--<artifactId>wagon-maven-plugin</artifactId>-->
-                        <!--<version>1.0</version>-->
-                        <!--<executions>-->
-                            <!--<execution>-->
-                                <!--<id>upload</id>-->
-                                <!--<phase>package</phase>-->
-                                <!--<goals>-->
-                                    <!--<goal>upload</goal>-->
-                                <!--</goals>-->
-                                <!--<configuration>-->
-                                    <!--<url>scp://test:sxstest2016@123.56.207.230</url>-->
-                                    <!--<fromDir>target/generated-resources/appassembler/jsw/server</fromDir>-->
-                                    <!--<toDir>/home/test/local/work2/approot/sxsServer</toDir>-->
-                                    <!--&lt;!&ndash;<optimize>true</optimize>&ndash;&gt;-->
-                                <!--</configuration>-->
-                            <!--</execution>-->
-                        <!--</executions>-->
-                    <!--</plugin>-->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>wagon-maven-plugin</artifactId>
+                        <version>1.0</version>
+                        <executions>
+                            <execution>
+                                <id>upload</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>upload-single</goal>
+                                </goals>
+                                <configuration>
+                                    <url>scp://test:sxstest2016@123.56.207.230</url>
+                                    <fromFile>target/sxs-server-1.0-SNAPSHOT.zip</fromFile>
+                                    <toFile>/home/test/local/work2/approot/sxsServer.zip</toFile>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <!--<plugin>-->
                         <!--<groupId>org.codehaus.mojo</groupId>-->
                         <!--<artifactId>wagon-maven-plugin</artifactId>-->
@@ -489,8 +502,8 @@
                         <!--</executions>-->
                     <!--</plugin>-->
 
-                <!--</plugins>-->
-            <!--</build>-->
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>product</id>
