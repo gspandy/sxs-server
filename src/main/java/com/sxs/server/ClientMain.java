@@ -15,7 +15,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -53,36 +53,10 @@ public class ClientMain {
         //调用远程服务
         BaseHeader baseHeader = new BaseHeader("1.0.0", Direction.REQ, UUID.randomUUID().toString(), "127.0.0.1", 9091);
         //insert
-        String uid = null;
-        SqlCallParameter sqlCallParameter = new SqlCallParameter(baseHeader, "insert into t_user (user_account,phone,user_name) values(?,?,?)", Arrays.asList( "t_1", "11111111111", "t_1"));
-        OperationResult operationResult = sqlCallServiceClient.insertSql(sqlCallParameter);
-        if (!operationResult.isSuccess()) {
-            logger.error(operationResult.toString());
-        }
-        if (operationResult.isSuccess()) {
-            uid = operationResult.getResult();
-            logger.info("uid:" + uid);
-        }
-        if (StringUtils.isNotBlank(uid)) {
-            //select
-            sqlCallParameter = new SqlCallParameter(baseHeader, "select * from t_user where uid=?", Arrays.asList(uid));
-            operationResult = sqlCallServiceClient.selectSql(sqlCallParameter);
-            if (operationResult.isSuccess()) {
-                logger.info(operationResult.getResult());
-            }
-            //update
-            sqlCallParameter = new SqlCallParameter(baseHeader, "update t_user set phone=? where uid=?", Arrays.asList("2222222222", uid));
-            operationResult = sqlCallServiceClient.updateSql(sqlCallParameter);
-            if (operationResult.isSuccess()) {
-                logger.info(operationResult.getResult());
-            }
-            //delete
-            sqlCallParameter = new SqlCallParameter(baseHeader, "delete from t_user where uid=?", Arrays.asList(uid));
-            operationResult = sqlCallServiceClient.deleteSql(sqlCallParameter);
-            if (operationResult.isSuccess()) {
-                logger.info(operationResult.getResult());
-            }
-        }
+        SqlCallParameter sqlCallParameter = new SqlCallParameter(baseHeader, "select * from  vault_user  where id=291", new ArrayList<>());
+        OperationResult operationResult = sqlCallServiceClient.selectSql(sqlCallParameter);
+        logger.info(operationResult.toString());
+
         builder.close();
         logger.info("执行时间:{}", System.currentTimeMillis() - begin);
     }

@@ -15,13 +15,17 @@
     </appender>
 
     <appender name="file" class="org.apache.log4j.RollingFileAppender">
-        <param name="Threshold" value="info"/>
         <param name="File" value="./logs/output.log"/>
         <param name="MaxFileSize" value="10MB"/>
-        <param name="MaxBackupIndex" value="10"/>
+        <param name="MaxBackupIndex" value="15"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS\}] [%-5p] [%t] %l  - %m%n"/>
         </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="info"/>
+            <param name="levelMax" value="warn"/>
+            <param name="AcceptOnMatch" value="true"/>
+        </filter>
     </appender>
 
     <appender name="errorFile" class="org.apache.log4j.DailyRollingFileAppender">
@@ -33,9 +37,22 @@
         </layout>
     </appender>
 
+    <logger name="org.apache.ibatis">
+        <level value="error"/>
+    </logger>
+
+    <logger name="org.apache.ibatis">
+        <level value="error"/>
+    </logger>
+    <logger name="com.atomikos">
+        <level value="error"/>
+    </logger>
+    <logger name="org.springframework">
+        <level value="error"/>
+    </logger>
     <!-- 根logger的设置-->
     <root>
-        <level value="DEBUG"/>
+        <level value="debug"/>
         <appender-ref ref="console"/>
         <appender-ref ref="file"/>
         <appender-ref ref="errorFile"/>

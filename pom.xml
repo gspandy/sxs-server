@@ -175,11 +175,11 @@
             <artifactId>jul-to-slf4j</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <dependency>
-            <groupId>uk.org.lidalia</groupId>
-            <artifactId>sysout-over-slf4j</artifactId>
-            <version>${sysout.over.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>uk.org.lidalia</groupId>-->
+            <!--<artifactId>sysout-over-slf4j</artifactId>-->
+            <!--<version>${sysout.over.version}</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -326,7 +326,7 @@
                 </executions>
                 <configuration>
                     <!-- 根目录 -->
-                    <assembleDirectory>${project.build.directory}/serverassemble</assembleDirectory>
+                    <assembleDirectory>${project.build.directory}/assemble</assembleDirectory>
                     <!-- 打包的jar，以及maven依赖的jar放到这个目录里面 -->
                     <repositoryName>lib</repositoryName>
                     <!-- 可执行脚本的目录 -->
@@ -344,7 +344,7 @@
                     <tempDirectory>tmp</tempDirectory>
                     <daemons>
                         <daemon>
-                            <id>sxsServer</id>
+                            <id>server</id>
                             <mainClass>com.sxs.server.ServerMain</mainClass>
                             <platforms>
                                 <platform>jsw</platform>
@@ -380,12 +380,12 @@
                             </generatorConfigurations>
                             <jvmSettings>
                                 <!-- jvm参数 -->
-                                <systemProperties>
-                                    <systemProperty>com.sun.management.jmxremote</systemProperty>
-                                    <systemProperty>com.sun.management.jmxremote.port=1984</systemProperty>
-                                    <systemProperty>com.sun.management.jmxremote.authenticate=false</systemProperty>
-                                    <systemProperty>com.sun.management.jmxremote.ssl=false</systemProperty>
-                                </systemProperties>
+                                <!--<systemProperties>-->
+                                    <!--<systemProperty>com.sun.management.jmxremote</systemProperty>-->
+                                    <!--<systemProperty>com.sun.management.jmxremote.port=1984</systemProperty>-->
+                                    <!--<systemProperty>com.sun.management.jmxremote.authenticate=false</systemProperty>-->
+                                    <!--<systemProperty>com.sun.management.jmxremote.ssl=false</systemProperty>-->
+                                <!--</systemProperties>-->
                                 <extraArguments>
                                     <extraArgument>-server</extraArgument>
                                     <extraArgument>-Xms128M</extraArgument>
@@ -394,6 +394,27 @@
                         </daemon>
                     </daemons>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>${basedir}/assembly.xml</descriptor> <!-- Assembly 描述符文件 -->
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
@@ -415,73 +436,61 @@
             <properties>
                 <profiles.active>develop</profiles.active>
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>wagon-maven-plugin</artifactId>
-                        <version>1.0</version>
-                        <configuration>
-                            <fromFile>target/test.jar</fromFile>
-                            <url>scp://test:sxstest2016@123.56.207.230/home/test/local/work2/approot</url>
-                        </configuration>
-                    </plugin>
+            <!--<build>-->
+                <!--<plugins>-->
 
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>wagon-maven-plugin</artifactId>
-                        <version>1.0</version>
-                        <executions>
-                            <execution>
-                                <id>upload</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>upload</goal>
-                                </goals>
-                                <configuration>
-                                    <url>scp://test:sxstest2016@123.56.207.230/home/test/local/work2/approot</url>
-                                    <fromDir>target\generated-resources\appassembler\jsw\sxsServer</fromDir>
-                                    <toDir>sxsServer</toDir>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
+                    <!--<plugin>-->
+                        <!--<groupId>org.codehaus.mojo</groupId>-->
+                        <!--<artifactId>wagon-maven-plugin</artifactId>-->
+                        <!--<version>1.0</version>-->
+                        <!--<executions>-->
+                            <!--<execution>-->
+                                <!--<id>upload</id>-->
+                                <!--<phase>package</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>upload</goal>-->
+                                <!--</goals>-->
+                                <!--<configuration>-->
+                                    <!--<url>scp://test:sxstest2016@123.56.207.230</url>-->
+                                    <!--<fromDir>target/generated-resources/appassembler/jsw/server</fromDir>-->
+                                    <!--<toDir>/home/test/local/work2/approot/sxsServer</toDir>-->
+                                    <!--&lt;!&ndash;<optimize>true</optimize>&ndash;&gt;-->
+                                <!--</configuration>-->
+                            <!--</execution>-->
+                        <!--</executions>-->
+                    <!--</plugin>-->
+                    <!--<plugin>-->
+                        <!--<groupId>org.codehaus.mojo</groupId>-->
+                        <!--<artifactId>wagon-maven-plugin</artifactId>-->
+                        <!--<version>1.0</version>-->
+                        <!--<executions>-->
+                            <!--<execution>-->
+                                <!--<id>execute-commands</id>-->
+                                <!--<phase>package</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>sshexec</goal>-->
+                                <!--</goals>-->
+                                <!--<configuration>-->
+                                    <!--<url>scp://test:sxstest2016@123.56.207.230/</url>-->
+                                    <!--<commands>-->
+                                        <!--<command>/home/test/local/work2/approot/sxsServer/bin/server stop</command>-->
+                                        <!--<command>rm -rf /home/test/local/work2/approot/sxsServer/</command>-->
+                                        <!--<command>mv  /home/test/local/work2/approot/sxsServer_tmp  /home/test/local/work2/approot/sxsServer/</command>-->
+                                        <!--<command>chmod +x /home/test/local/work2/approot/sxsServer/bin/server</command>-->
+                                        <!--<command>chmod +x /home/test/local/work2/approot/sxsServer/bin/wrapper-linux-x86-32</command>-->
+                                        <!--<command>chmod +x /home/test/local/work2/approot/sxsServer/bin/wrapper-linux-x86-64</command>-->
+                                        <!--<command>/home/test/local/work2/approot/sxsServer/bin/server start</command>-->
+                                        <!--<command>tail -f /home/test/local/work2/approot/sxsServer/logs/wrapper.log</command>-->
+                                    <!--</commands>-->
+                                    <!--&lt;!&ndash; 显示运行命令的输出结果 &ndash;&gt;-->
+                                    <!--<displayCommandOutputs>true</displayCommandOutputs>-->
+                                <!--</configuration>-->
+                            <!--</execution>-->
+                        <!--</executions>-->
+                    <!--</plugin>-->
 
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>wagon-maven-plugin</artifactId>
-                        <version>1.0</version>
-                        <executions>
-                            <execution>
-                                <id>execute-commands</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>sshexec</goal>
-                                </goals>
-                                <configuration>
-                                    <url>scp://test:sxstest2016@123.56.207.230/</url>
-                                    <commands>
-                                        <command>chmod +x /home/test/local/work2/approot/sxsServer/bin/sxsServer
-                                        </command>
-                                        <command>chmod +x
-                                            /home/test/local/work2/approot/sxsServer/bin/wrapper-linux-x86-32
-                                        </command>
-                                        <command>chmod +x
-                                            /home/test/local/work2/approot/sxsServer/bin/wrapper-linux-x86-64
-                                        </command>
-                                        <command>/home/test/local/work2/approot/sxsServer/bin/sxsServer stop</command>
-                                        <command>/home/test/local/work2/approot/sxsServer/bin/sxsServer start</command>
-                                        <command>tail -f /home/test/local/work2/approot/sxsServer/logs/wrapper.log
-                                        </command>
-                                    </commands>
-                                    <!-- 显示运行命令的输出结果 -->
-                                    <displayCommandOutputs>true</displayCommandOutputs>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
+                <!--</plugins>-->
+            <!--</build>-->
         </profile>
         <profile>
             <id>product</id>

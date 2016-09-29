@@ -76,9 +76,11 @@ class ThriftServerEventHandler implements TServerEventHandler {
      */
     public void processContext(ServerContext serverContext, TTransport inputTransport, TTransport outputTransport) {
         ThriftServerContext ctx = (ThriftServerContext) serverContext;
+        /*
         if (logger.isDebugEnabled()) {
             logger.debug("TServerEventHandler.processContext - connection #" + ctx.getConnectionId() + " is ready to process next request");
         }
+        */
     }
 
 }
