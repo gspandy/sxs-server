@@ -24,7 +24,7 @@ public class TimeInterceptor implements MethodInterceptor {
         Object result = invocation.proceed();
 
         clock.stop(); //计时结束
-        logger.info("[" + methodName + "] 执行时间:" + clock.getTime() + " ms");
+        logger.debug("[" + methodName + "] 执行时间:" + clock.getTime() + " ms");
         return result;
     }
 }
